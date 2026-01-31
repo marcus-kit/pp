@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
-import { updateMerchantSchema } from '~~/shared/schemas/merchant'
-import type { Merchant } from '~~/shared/types/database'
+import { updateMerchantSchema } from '~/shared/schemas/merchant'
+import type { Merchant } from '~/shared/types/database'
 
 definePageMeta({
   title: 'Настройки профиля',
