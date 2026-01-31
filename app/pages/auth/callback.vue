@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
     <div class="w-full max-w-md">
-      <!-- Загрузка -->
       <div class="text-center">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-700 mb-6">
           <svg class="w-8 h-8 text-slate-300 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -13,7 +12,6 @@
         <p class="text-slate-400">Пожалуйста, подождите...</p>
       </div>
 
-      <!-- Сообщение об ошибке -->
       <Transition name="fade">
         <div v-if="error" class="mt-8 p-4 bg-red-900/30 text-red-300 border border-red-700 rounded-lg text-sm">
           <p class="font-medium mb-2">{{ error }}</p>
@@ -27,8 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
 definePageMeta({
   layout: false
 })
@@ -39,21 +35,6 @@ const error = ref('')
 
 onMounted(async () => {
   try {
-    // Получаем code из URL (PKCE flow)
-    const code = useRoute().query.code as string | undefined
-    
-    if (code) {
-      // Обмениваем code на сессию
-      const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
-      
-      if (exchangeError) {
-        console.error('Exchange error:', exchangeError)
-        error.value = exchangeError.message || 'Ошибка при обработке входа'
-        return
-      }
-    }
-
-    // Проверяем сессию
     const { data, error: sessionError } = await supabase.auth.getSession()
 
     if (sessionError) {
@@ -62,10 +43,8 @@ onMounted(async () => {
     }
 
     if (data?.session) {
-      // Успешный вход - перенаправляем на dashboard
       await router.push('/dashboard')
     } else {
-      // Нет сессии - возможно токен истёк
       error.value = 'Сессия не найдена. Попробуйте войти снова.'
     }
   } catch (err) {

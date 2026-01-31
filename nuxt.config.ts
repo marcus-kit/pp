@@ -49,6 +49,16 @@ export default defineNuxtConfig({
   },
 
   supabase: {
+    // Отключаем SSR cookies чтобы использовать implicit flow
+    // (PKCE требует сохранения code_verifier, что не работает при переходе из email)
+    useSsrCookies: false,
+    clientOptions: {
+      auth: {
+        flowType: 'implicit',
+        detectSessionInUrl: true,
+        persistSession: true
+      }
+    },
     redirectOptions: {
       login: '/auth/login',
       callback: '/auth/callback',
