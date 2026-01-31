@@ -7,7 +7,7 @@ PayPal-like инвойсинговая система для российско�
 - **Framework**: Nuxt 4 + Nitro
 - **UI**: Nuxt UI 4.4 + Tailwind CSS
 - **Database**: PostgreSQL + Supabase (RLS enabled)
-- **Auth**: Magic Link (Supabase Auth)
+- **Auth**: Magic Link (Supabase Auth) — **ВРЕМЕННО ОТКЛЮЧЕНА**
 - **Deploy**: Dokploy @ pp.doka.team
 
 ## Project Structure
@@ -135,3 +135,22 @@ DATABASE_URL=
 - API: `[resource]/index.[method].ts`, `[resource]/[id].[method].ts`
 - Pages: `[resource]/index.vue`, `[resource]/[id].vue`
 - Schemas: `[resource].ts` в `app/shared/schemas/`
+
+## Known Issues
+
+### Auth отключена
+
+Magic Link авторизация временно отключена из-за проблем с PKCE flow:
+- PKCE требует сохранения `code_verifier` в cookies при отправке OTP
+- При переходе по ссылке из email `code_verifier` не находится
+- Ошибка: "PKCE code verifier not found in storage"
+
+**Что пробовали:**
+- `@nuxtjs/supabase` с `useSsrCookies: true` (default)
+- Implicit flow с `flowType: 'implicit'`
+- Ручной `exchangeCodeForSession(code)`
+
+**Нужно разобраться:**
+- Правильная настройка cookies для SSR
+- Возможно проблема в Cloudflare / Traefik прокси
+- Альтернатива: OAuth провайдеры (Google, GitHub)
