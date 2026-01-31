@@ -71,11 +71,16 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+definePageMeta({
+  layout: false
+})
+
 const router = useRouter()
 const email = ref('')
 const loading = ref(false)
 const message = ref('')
 const messageType = ref<'success' | 'error'>('success')
+const supabase = useSupabaseClient()
 
 const handleLogin = async () => {
   if (!email.value) return
@@ -84,14 +89,6 @@ const handleLogin = async () => {
   message.value = ''
 
   try {
-    const { createClient } = await import('@supabase/supabase-js')
-    const config = useRuntimeConfig()
-
-    const supabase = createClient(
-      config.public.supabaseUrl,
-      config.public.supabaseKey
-    )
-
     const { error } = await supabase.auth.signInWithOtp({
       email: email.value,
       options: {

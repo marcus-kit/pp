@@ -1,4 +1,6 @@
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware((to) => {
+  const user = useSupabaseUser()
+
   // Публичные маршруты, доступные без аутентификации
   const publicRoutes = ['/auth/login', '/auth/callback', '/auth/confirm']
 
@@ -7,24 +9,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return
   }
 
-  // Для остальных маршрутов проверяем аутентификацию
-  try {
-    const { createClient } = await import('@supabase/supabase-js')
-    const config = useRuntimeConfig()
-
-    const supabase = createClient(
-      config.public.supabaseUrl,
-      config.public.supabaseKey
-    )
-
-    const { data: { session } } = await supabase.auth.getSession()
-
-    // Если нет сессии - перенаправляем на login
-    if (!session) {
-      return navigateTo('/auth/login')
-    }
-  } catch (error) {
-    console.error('Auth middleware error:', error)
+  if (!user.value) {
     return navigateTo('/auth/login')
   }
 })

@@ -404,11 +404,12 @@ USING (
 );
 
 -- Анонимный пользователь может просматривать счет по public_token
-CREATE POLICY "Anon can view invoice by public token"
-ON invoices
-FOR SELECT
-TO anon
-USING (true);
+-- УДАЛЕНО: API использует service_role, прямой доступ anon не нужен и опасен
+-- CREATE POLICY "Anon can view invoice by public token"
+-- ON invoices
+-- FOR SELECT
+-- TO anon
+-- USING (true);
 
 -- Service role имеет полный доступ
 CREATE POLICY "Service role full access on invoices"

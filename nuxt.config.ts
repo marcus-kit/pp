@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/eslint',
     '@pinia/nuxt',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    '@nuxtjs/supabase'
   ],
 
   // Подключаем CSS с Tailwind и Nuxt UI
@@ -25,7 +26,11 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'node-server',
     experimental: {
-      websocket: true
+      websocket: true,
+      tasks: true
+    },
+    scheduledTasks: {
+      '0 2 * * *': ['process-recurring']
     }
   },
 

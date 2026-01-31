@@ -88,6 +88,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  middleware: 'auth'
+})
+
 const { formatMoney, formatDate } = useFormatters()
 
 const { data, pending, error } = await useFetch('/api/stats/dashboard')
