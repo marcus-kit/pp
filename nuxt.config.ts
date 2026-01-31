@@ -48,24 +48,10 @@ export default defineNuxtConfig({
     }
   },
 
+  // TODO: Авторизация временно отключена — Magic Link не работает из-за проблем с PKCE/cookies
+  // Нужно разобраться с настройкой Supabase Auth для SSR
   supabase: {
-    // Отключаем SSR cookies чтобы использовать implicit flow
-    // (PKCE требует сохранения code_verifier, что не работает при переходе из email)
-    useSsrCookies: false,
-    clientOptions: {
-      auth: {
-        flowType: 'implicit',
-        detectSessionInUrl: true,
-        persistSession: true
-      }
-    },
-    redirectOptions: {
-      login: '/auth/login',
-      callback: '/auth/callback',
-      include: undefined,
-      exclude: ['/', '/i/*'],
-      saveRedirectToCookie: true
-    }
+    redirect: false
   },
 
   // DevTools
