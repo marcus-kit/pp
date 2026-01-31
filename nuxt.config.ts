@@ -48,6 +48,16 @@ export default defineNuxtConfig({
     }
   },
 
+  supabase: {
+    redirectOptions: {
+      login: '/auth/login',
+      callback: '/auth/callback',
+      include: undefined,
+      exclude: ['/', '/i/*'],
+      saveRedirectToCookie: true
+    }
+  },
+
   // DevTools
   devtools: { enabled: true }
 })
