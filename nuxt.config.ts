@@ -35,14 +35,12 @@ export default defineNuxtConfig({
     databaseUrl: process.env.DATABASE_URL,
     sessionSecret: process.env.SESSION_SECRET,
 
-    // Supabase
-    supabaseUrl: process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
-    supabaseKey: process.env.SUPABASE_KEY || 'placeholder-key',
-
     // Публичные переменные (доступны на клиенте)
     public: {
       appName: 'PP Invoicing',
-      appVersion: '1.0.0'
+      appVersion: '1.0.0',
+      supabaseUrl: process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
+      supabaseKey: process.env.SUPABASE_KEY || 'placeholder-key'
     }
   },
 
