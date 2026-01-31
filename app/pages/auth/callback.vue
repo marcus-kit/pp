@@ -28,27 +28,36 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+
+definePageMeta({
+  layout: false
+})
 
 const router = useRouter()
-const route = useRoute()
+const supabase = useSupabaseClient()
 const error = ref('')
 
 onMounted(async () => {
   try {
-    const { createClient } = await import('@supabase/supabase-js')
-    const config = useRuntimeConfig()
+    // Получаем code из URL (PKCE flow)
+    const code = useRoute().query.code as string | undefined
+    
+    if (code) {
+      // Обмениваем code на сессию
+      const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+      
+      if (exchangeError) {
+        console.error('Exchange error:', exchangeError)
+        error.value = exchangeError.message || 'Ошибка при обработке входа'
+        return
+      }
+    }
 
-    const supabase = createClient(
-      config.public.supabaseUrl,
-      config.public.supabaseKey
-    )
+    // Проверяем сессию
+    const { data, error: sessionError } = await supabase.auth.getSession()
 
-    // Обработка callback от Supabase
-    const { data, error: authError } = await supabase.auth.getSession()
-
-    if (authError) {
-      error.value = authError.message || 'Ошибка при обработке входа'
+    if (sessionError) {
+      error.value = sessionError.message || 'Ошибка при получении сессии'
       return
     }
 
@@ -56,8 +65,8 @@ onMounted(async () => {
       // Успешный вход - перенаправляем на dashboard
       await router.push('/dashboard')
     } else {
-      // Нет сессии - перенаправляем на confirm
-      await router.push('/auth/confirm')
+      // Нет сессии - возможно токен истёк
+      error.value = 'Сессия не найдена. Попробуйте войти снова.'
     }
   } catch (err) {
     error.value = 'Произошла ошибка при обработке входа'
