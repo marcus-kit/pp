@@ -27,3 +27,9 @@
 - Primary: 'blue' (Tailwind default, includes #0070BA in blue-600 range)
 - Neutral: 'gray' (standard for text/borders/backgrounds)
 - Auto dark mode via system preference
+
+## Layout Updates
+- Replaced manual `NuxtLink` navigation with `UNavigationMenu` for cleaner code and better accessibility.
+- Implemented `UDrawer` for mobile navigation, triggered by a hamburger button visible only on mobile.
+- Centralized navigation items in a `computed` property to ensure consistency between desktop and mobile menus.
+- Added `data-testid` attributes to critical UI elements (mobile menu button) to facilitate E2E testing.
