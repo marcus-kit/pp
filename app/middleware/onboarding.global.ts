@@ -1,4 +1,8 @@
 export default defineNuxtRouteMiddleware(async (to) => {
+  // TODO: Включить когда auth заработает
+  // Сейчас отключено - auth временно не работает
+  return
+
   const user = useSupabaseUser()
   
   if (!user.value) return
