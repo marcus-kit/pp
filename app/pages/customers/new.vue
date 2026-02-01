@@ -59,7 +59,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       />
       <div>
         <h1 class="text-2xl font-bold">Новый клиент</h1>
-        <p class="text-sm text-muted-foreground">Заполните данные клиента</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Заполните данные клиента</p>
       </div>
     </div>
 

@@ -1,4 +1,4 @@
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 import type { Database } from '~/shared/types/database'
 
 export default defineEventHandler(async (event) => {
@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'ID is required' })
   }
 
-  const client = await serverSupabaseClient<Database>(event)
+  const client = await serverSupabaseServiceRole<Database>(event)
 
   const { data, error } = await client
     .from('recurring_invoices')

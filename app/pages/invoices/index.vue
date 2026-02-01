@@ -75,7 +75,7 @@ function getStatusLabel(status: string) {
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-bold">Счета</h1>
-        <p class="text-muted-foreground">Управление счетами на оплату</p>
+        <p class="text-gray-600 dark:text-gray-400">Управление счетами на оплату</p>
       </div>
       <UButton
         icon="i-lucide-plus"
@@ -126,9 +126,9 @@ function getStatusLabel(status: string) {
       >
         <template #empty-state>
           <div class="flex flex-col items-center justify-center py-12 gap-3" data-testid="invoices-empty-state">
-            <UIcon name="i-lucide-file-text" class="size-12 text-muted-foreground" />
+            <UIcon name="i-lucide-file-text" class="size-12 text-gray-600 dark:text-gray-400" />
             <h3 class="text-lg font-semibold">Счета не найдены</h3>
-            <p class="text-muted-foreground text-center max-w-sm">
+            <p class="text-gray-600 dark:text-gray-400 text-center max-w-sm">
               {{ searchQuery || statusFilter ? 'Попробуйте изменить параметры поиска' : 'Создайте первый счёт на оплату' }}
             </p>
             <UButton
@@ -156,7 +156,7 @@ function getStatusLabel(status: string) {
 
         <template #customer-data="{ row }">
           <span v-if="row.customer">{{ row.customer.full_name }}</span>
-          <span v-else class="text-muted-foreground">{{ row.payer_name }}</span>
+          <span v-else class="text-gray-600 dark:text-gray-400">{{ row.payer_name }}</span>
         </template>
 
         <template #amount-data="{ row }">
@@ -190,7 +190,7 @@ function getStatusLabel(status: string) {
         v-if="data?.totalPages && data.totalPages > 1"
         class="flex items-center justify-between px-4 py-3 border-t"
       >
-        <p class="text-sm text-muted-foreground">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
           Показано {{ (page - 1) * limit + 1 }}–{{ Math.min(page * limit, data.total) }} из {{ data.total }}
         </p>
         <UPagination

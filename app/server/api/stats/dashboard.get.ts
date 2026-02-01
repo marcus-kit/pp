@@ -1,7 +1,8 @@
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
+import type { Database } from '~/shared/types/database'
 
 export default defineEventHandler(async (event) => {
-  const client = await serverSupabaseClient(event)
+  const client = await serverSupabaseServiceRole<Database>(event)
   const now = new Date()
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
   const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString()

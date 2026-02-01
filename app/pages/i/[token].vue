@@ -20,12 +20,12 @@ const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
 
 const statusColor = (status: string) => {
   switch (status) {
-    case 'paid': return 'green'
-    case 'sent': return 'blue'
-    case 'viewed': return 'blue'
-    case 'overdue': return 'red'
-    case 'cancelled': return 'gray'
-    default: return 'gray'
+    case 'paid': return 'success'
+    case 'sent': return 'info'
+    case 'viewed': return 'info'
+    case 'overdue': return 'error'
+    case 'cancelled': return 'neutral'
+    default: return 'neutral'
   }
 }
 
@@ -142,15 +142,15 @@ const downloadPdf = () => {
             {{ statusLabel(invoice.status) }}
           </UBadge>
         </div>
-         <UButton
-           icon="i-lucide-download"
-           color="gray"
-           variant="ghost"
-           @click="downloadPdf"
-           data-testid="download-pdf-btn"
-         >
-           Скачать PDF
-         </UButton>
+          <UButton
+            icon="i-lucide-download"
+            color="neutral"
+            variant="ghost"
+            @click="downloadPdf"
+            data-testid="download-pdf-btn"
+          >
+            Скачать PDF
+          </UButton>
       </div>
 
       <UCard class="mb-6">
@@ -190,7 +190,7 @@ const downloadPdf = () => {
 
         <!-- Items Table -->
         <div class="mb-8" data-testid="items-table">
-          <UTable :rows="items" :columns="columns" :ui="{ th: { base: 'text-left' }, td: { base: 'text-left' } }">
+          <UTable :data="items" :columns="columns" :ui="{ th: { base: 'text-left' }, td: { base: 'text-left' } }">
             <template #price-data="{ row }">
               <div class="text-right">{{ row.price }}</div>
             </template>

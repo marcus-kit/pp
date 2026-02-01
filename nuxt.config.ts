@@ -1,6 +1,7 @@
 // Конфигурация Nuxt для PayPal-like invoicing системы
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-30',
+  ssr: false,
 
   future: {
     compatibilityVersion: 4
@@ -20,6 +21,8 @@ export default defineNuxtConfig({
   icon: {
     collections: ['lucide']
   },
+
+  serverDir: 'app/server',
 
   // Nitro server
   nitro: {

@@ -97,9 +97,9 @@ async function deleteCustomer() {
     </div>
 
     <div v-else-if="!customer" class="text-center py-12">
-      <UIcon name="i-lucide-user-x" class="size-12 mx-auto text-muted-foreground mb-4" />
+      <UIcon name="i-lucide-user-x" class="size-12 mx-auto text-gray-600 dark:text-gray-400 mb-4" />
       <h3 class="text-lg font-semibold mb-2">Клиент не найден</h3>
-      <p class="text-muted-foreground mb-4">Возможно, клиент был удалён</p>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">Возможно, клиент был удалён</p>
       <UButton to="/customers" icon="i-lucide-arrow-left">
         К списку клиентов
       </UButton>
@@ -116,7 +116,7 @@ async function deleteCustomer() {
           />
           <div>
             <h1 class="text-2xl font-bold">{{ customer.full_name }}</h1>
-            <p class="text-sm text-muted-foreground">ID: {{ customer.id }}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">ID: {{ customer.id }}</p>
           </div>
         </div>
         <div class="flex items-center gap-2">
@@ -248,14 +248,14 @@ async function deleteCustomer() {
           </template>
           <dl class="space-y-3">
             <div v-if="customer.email">
-              <dt class="text-sm text-muted-foreground">Email</dt>
+              <dt class="text-sm text-gray-600 dark:text-gray-400">Email</dt>
               <dd class="font-medium">{{ customer.email }}</dd>
             </div>
             <div v-if="customer.phone">
-              <dt class="text-sm text-muted-foreground">Телефон</dt>
+              <dt class="text-sm text-gray-600 dark:text-gray-400">Телефон</dt>
               <dd class="font-medium">{{ customer.phone }}</dd>
             </div>
-            <div v-if="!customer.email && !customer.phone" class="text-muted-foreground">
+            <div v-if="!customer.email && !customer.phone" class="text-gray-600 dark:text-gray-400">
               Контакты не указаны
             </div>
           </dl>
@@ -270,22 +270,22 @@ async function deleteCustomer() {
           </template>
           <dl class="space-y-3">
             <div v-if="customer.inn">
-              <dt class="text-sm text-muted-foreground">ИНН</dt>
+              <dt class="text-sm text-gray-600 dark:text-gray-400">ИНН</dt>
               <dd class="font-medium font-mono">{{ customer.inn }}</dd>
             </div>
             <div v-if="customer.kpp">
-              <dt class="text-sm text-muted-foreground">КПП</dt>
+              <dt class="text-sm text-gray-600 dark:text-gray-400">КПП</dt>
               <dd class="font-medium font-mono">{{ customer.kpp }}</dd>
             </div>
             <div v-if="customer.ogrn">
-              <dt class="text-sm text-muted-foreground">ОГРН</dt>
+              <dt class="text-sm text-gray-600 dark:text-gray-400">ОГРН</dt>
               <dd class="font-medium font-mono">{{ customer.ogrn }}</dd>
             </div>
             <div v-if="customer.legal_address">
-              <dt class="text-sm text-muted-foreground">Юридический адрес</dt>
+              <dt class="text-sm text-gray-600 dark:text-gray-400">Юридический адрес</dt>
               <dd class="font-medium">{{ customer.legal_address }}</dd>
             </div>
-            <div v-if="!customer.inn && !customer.kpp && !customer.ogrn && !customer.legal_address" class="text-muted-foreground">
+            <div v-if="!customer.inn && !customer.kpp && !customer.ogrn && !customer.legal_address" class="text-gray-600 dark:text-gray-400">
               Реквизиты не указаны
             </div>
           </dl>

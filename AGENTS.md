@@ -2,29 +2,47 @@
 
 PayPal-like инвойсинговая система для российского рынка.
 
+**Generated:** 2026-02-01 | **Commit:** 95793b7 | **Branch:** main
+
 ## Stack
 
 - **Framework**: Nuxt 4 + Nitro
-- **UI**: Nuxt UI 4.4 + Tailwind CSS
+- **UI**: Nuxt UI 4.4 + Tailwind CSS 4
 - **Database**: PostgreSQL + Supabase (RLS enabled)
 - **Auth**: Magic Link (Supabase Auth) — **ВРЕМЕННО ОТКЛЮЧЕНА**
 - **Deploy**: Dokploy @ pp.doka.team
+- **Icons**: Lucide (i-lucide-*)
+- **Theme**: PayPal Blue (#0070BA), auto dark mode
 
 ## Project Structure
 
 ```
-app/
-├── pages/           # Nuxt pages (auto-routing)
-├── server/          # Nitro API + tasks + utils (см. app/server/AGENTS.md)
-├── shared/          # Types, schemas, constants (см. app/shared/AGENTS.md)
-├── components/      # Vue components
-├── composables/     # Vue composables
-├── middleware/      # Route middleware
-├── layouts/         # Page layouts
-└── assets/          # CSS, static files
-sql/                 # Database migrations
-tests/               # E2E tests
+pp/
+├── app/
+│   ├── pages/           # Nuxt pages (auto-routing)
+│   ├── server/          # Nitro API + tasks + utils (см. app/server/AGENTS.md)
+│   ├── shared/          # Types, schemas, constants (см. app/shared/AGENTS.md)
+│   ├── components/      # Vue components (StatCard)
+│   ├── composables/     # useFormatters() - money/date formatting
+│   ├── middleware/      # auth.ts, onboarding.global.ts
+│   ├── layouts/         # default.vue with NavigationMenu + Drawer
+│   └── assets/css/      # Tailwind main.css
+├── sql/                 # Database migrations
+└── .sisyphus/           # Work plans and notepads
 ```
+
+## WHERE TO LOOK
+
+| Task | Location | Notes |
+|------|----------|-------|
+| API endpoints | `app/server/api/` | See `app/server/AGENTS.md` |
+| Zod schemas | `app/shared/schemas/` | See `app/shared/AGENTS.md` |
+| DB types | `app/shared/types/database.ts` | Supabase generated |
+| Page forms | `app/pages/*/new.vue`, `[id].vue` | Invoice, Customer, Recurring |
+| PDF generation | `app/server/utils/pdf-generator.ts` | PDFKit, A4 |
+| QR codes | `app/server/utils/qr-sbp.ts` | ГОСТ Р 56042-2014 |
+| Theme config | `app/app.config.ts` | Colors: blue primary |
+| Layout | `app/layouts/default.vue` | NavigationMenu + mobile Drawer |
 
 ## Critical Rules
 
@@ -80,9 +98,10 @@ api/
 ├── customers/     # CRUD клиентов
 ├── invoices/      # CRUD счетов + статусы
 ├── recurring/     # Повторяющиеся счета
-├── merchant/      # Профиль мерчанта
+├── merchant/      # Профиль мерчанта (singular - один на user)
 ├── stats/         # Dashboard статистика
-└── public/        # Публичный доступ (без auth)
+├── public/        # Публичный доступ (без auth)
+└── invoice/[token]/ # PDF по токену (публичный)
 ```
 
 ## Validation
@@ -97,6 +116,58 @@ Zod schemas в `app/shared/schemas/`:
 const body = await readValidatedBody(event, (b) => createInvoiceSchema.parse(b))
 ```
 
+## Frontend Patterns
+
+### Data Fetching
+```typescript
+// Списки - useLazyFetch (не блокирует навигацию)
+const { data, status, refresh } = useLazyFetch('/api/invoices', {
+  query: { page, search },
+  watch: [page, search]
+})
+
+// Детали - useFetch (блокирует до загрузки)
+const { data } = await useFetch(`/api/invoices/${id}`)
+
+// Мутации - $fetch
+await $fetch('/api/invoices', { method: 'POST', body })
+```
+
+### Notifications & Navigation
+```typescript
+const toast = useToast()
+const router = useRouter()
+
+toast.add({ title: 'Успешно сохранено' })
+toast.add({ title: 'Ошибка', description: error.message, color: 'red' })
+router.push('/invoices')
+```
+
+### Form Pattern
+```vue
+<UForm :schema="createInvoiceSchema" :state="state" @submit="onSubmit">
+  <UFormGroup label="Название" name="name" required>
+    <UInput v-model="state.name" />
+  </UFormGroup>
+</UForm>
+```
+
+### Status Colors
+```typescript
+const statusColors: Record<string, string> = {
+  draft: 'gray', sent: 'blue', viewed: 'amber',
+  paid: 'green', cancelled: 'red', overdue: 'red'
+}
+```
+
+## UI Components (Nuxt UI)
+
+**Layout**: UContainer, UCard, UNavigationMenu, UDrawer
+**Forms**: UForm, UFormGroup, UInput, UTextarea, USelect, USelectMenu
+**Data**: UTable, UPagination, UBadge, USkeleton
+**Actions**: UButton, UDropdown, UIcon
+**Icons**: Lucide - `icon="i-lucide-plus"`, `icon="i-lucide-trash-2"`
+
 ## Error Handling
 
 ```typescript
@@ -105,12 +176,6 @@ throw createError({
   statusMessage: 'Unauthorized'
 })
 ```
-
-## PDF & QR
-
-- PDF: PDFKit, A4, шрифт Helvetica
-- QR: ГОСТ Р 56042-2014, формат ST00012 (UTF-8)
-- Pipe символ (|) в значениях QR экранировать
 
 ## Scheduled Tasks
 
@@ -125,7 +190,7 @@ scheduledTasks: {
 
 ```env
 SUPABASE_URL=
-SUPABASE_ANON_KEY=
+SUPABASE_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 DATABASE_URL=
 ```
@@ -154,3 +219,11 @@ Magic Link авторизация временно отключена из-за 
 - Правильная настройка cookies для SSR
 - Возможно проблема в Cloudflare / Traefik прокси
 - Альтернатива: OAuth провайдеры (Google, GitHub)
+
+## Commands
+
+```bash
+bun run dev      # Development server
+bun run build    # Production build
+bun run preview  # Preview production
+```

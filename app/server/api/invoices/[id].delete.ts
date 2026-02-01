@@ -1,9 +1,9 @@
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 import type { Database } from '~/shared/types/database'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
-  const client = await serverSupabaseClient<Database>(event)
+  const client = await serverSupabaseServiceRole<Database>(event)
 
   const { error } = await client
     .from('invoices')

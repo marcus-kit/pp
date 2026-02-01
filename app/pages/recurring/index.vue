@@ -49,7 +49,7 @@ function formatDate(date: string | null) {
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
         <h1 class="text-2xl font-bold" data-testid="page-title">Регулярные счета</h1>
-        <p class="text-muted-foreground">Автоматическое выставление счетов</p>
+        <p class="text-gray-600 dark:text-gray-400">Автоматическое выставление счетов</p>
       </div>
       <UButton
         icon="i-lucide-plus"
@@ -107,7 +107,7 @@ function formatDate(date: string | null) {
         <template #name-data="{ row }">
           <div>
             <div class="font-medium">{{ row.name }}</div>
-            <div v-if="row.description" class="text-sm text-muted-foreground">
+            <div v-if="row.description" class="text-sm text-gray-600 dark:text-gray-400">
               {{ row.description }}
             </div>
           </div>
@@ -115,7 +115,7 @@ function formatDate(date: string | null) {
 
         <template #customer-data="{ row }">
           <span v-if="row.customer">{{ row.customer.full_name }}</span>
-          <span v-else class="text-muted-foreground">—</span>
+          <span v-else class="text-gray-600 dark:text-gray-400">—</span>
         </template>
 
         <template #amount-data="{ row }">
@@ -148,10 +148,10 @@ function formatDate(date: string | null) {
 
       <div v-if="data?.items?.length === 0 && status !== 'pending'" class="p-8 text-center" data-testid="empty-state">
         <div class="bg-neutral-50 dark:bg-neutral-900 rounded-full p-4 w-fit mx-auto mb-4">
-          <UIcon name="i-lucide-repeat" class="size-8 text-muted-foreground" />
+          <UIcon name="i-lucide-repeat" class="size-8 text-gray-600 dark:text-gray-400" />
         </div>
         <h3 class="text-lg font-semibold mb-2">Подписки не найдены</h3>
-        <p class="text-muted-foreground mb-6 max-w-sm mx-auto">
+        <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-sm mx-auto">
           Настройте регулярное выставление счетов для ваших клиентов.
         </p>
         <UButton to="/recurring/new" icon="i-lucide-plus" data-testid="empty-state-create-button">

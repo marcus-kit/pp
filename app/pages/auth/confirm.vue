@@ -33,17 +33,17 @@
           </div>
         </div>
 
-        <template #footer>
-          <UButton
-            to="/auth/login"
-            block
-            color="gray"
-            variant="solid"
-            data-testid="back-to-login-btn"
-          >
-            Вернуться на страницу входа
-          </UButton>
-        </template>
+         <template #footer>
+           <UButton
+             to="/auth/login"
+             block
+             color="neutral"
+             variant="solid"
+             data-testid="back-to-login-btn"
+           >
+             Вернуться на страницу входа
+           </UButton>
+         </template>
       </UCard>
 
       <!-- Footer -->

@@ -1,13 +1,10 @@
-import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
-import { Database } from '~/shared/types/database'
+import { serverSupabaseServiceRole } from '#supabase/server'
+import type { Database } from '~/shared/types/database'
+import { getOrCreateDefaultMerchant } from '~/server/utils/merchant'
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
-  if (!user) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
-  }
-
-  const supabase = await serverSupabaseClient<Database>(event)
+  const client = await serverSupabaseServiceRole<Database>(event)
+  const merchant = await getOrCreateDefaultMerchant(client)
   const query = getQuery(event)
 
   // Параметры пагинации
@@ -16,9 +13,10 @@ export default defineEventHandler(async (event) => {
   const offset = (page - 1) * limit
 
   // Построение запроса
-  let request = supabase
+  let request = client
     .from('customers')
     .select('*', { count: 'exact' })
+    .eq('merchant_id', merchant.id)
 
   // Поиск по тексту (имя или email)
   if (query.query) {

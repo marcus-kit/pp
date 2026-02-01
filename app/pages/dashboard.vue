@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Обзор</h1>
       <div class="flex gap-3">
-         <UButton to="/customers/new" icon="i-lucide-user-plus" color="white" variant="solid" data-testid="add-customer-btn">
+         <UButton to="/customers/new" icon="i-lucide-user-plus" color="neutral" variant="solid" data-testid="add-customer-btn">
            Добавить клиента
          </UButton>
          <UButton to="/invoices/new" icon="i-lucide-file-plus" color="primary" variant="solid" data-testid="create-invoice-btn">
@@ -13,7 +13,6 @@
     </div>
 
     <div v-if="pending" class="space-y-8" data-testid="dashboard-skeleton">
-      <!-- Stats Skeleton -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <UCard v-for="i in 3" :key="i">
           <div class="flex items-center justify-between">
@@ -26,7 +25,6 @@
         </UCard>
       </div>
       
-      <!-- Table Skeleton -->
       <UCard>
         <div class="space-y-4">
           <div class="flex justify-between items-center mb-4">
@@ -45,7 +43,6 @@
     </div>
 
     <div v-else class="space-y-8">
-      <!-- Stats -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-testid="stats-grid">
          <StatCard
            title="Ожидает оплаты"
@@ -70,45 +67,27 @@
          />
       </div>
 
-      <!-- Recent Invoices -->
       <UCard data-testid="recent-invoices-table">
         <template #header>
           <div class="flex justify-between items-center">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Недавние счета</h2>
-             <UButton to="/invoices" variant="ghost" color="gray" size="sm">
+             <UButton to="/invoices" variant="ghost" color="neutral" size="sm">
                Все счета
                <UIcon name="i-lucide-arrow-right" />
              </UButton>
           </div>
         </template>
 
-        <UTable :rows="data?.recentInvoices || []" :columns="columns">
-          <template #invoice_number-data="{ row }">
-            <NuxtLink :to="`/invoices/${row.id}`" class="text-primary-600 hover:text-primary-500 font-medium">
-              {{ row.invoice_number }}
-            </NuxtLink>
-          </template>
-          
-          <template #amount-data="{ row }">
-            {{ formatMoney(row.amount) }}
-          </template>
-
-          <template #status-data="{ row }">
-            <UBadge :color="getStatusColor(row.status)" variant="subtle">
-              {{ getStatusLabel(row.status) }}
-            </UBadge>
-          </template>
-
-          <template #created_at-data="{ row }">
-            {{ formatDate(row.created_at) }}
-          </template>
-        </UTable>
+        <UTable :data="data?.recentInvoices || []" :columns="columns" />
       </UCard>
     </div>
   </UContainer>
 </template>
 
 <script setup lang="ts">
+import { h, resolveComponent } from 'vue'
+import type { TableColumn } from '@nuxt/ui'
+
 definePageMeta({
   middleware: 'auth'
 })
@@ -117,24 +96,28 @@ const { formatMoney, formatDate } = useFormatters()
 
 const { data, pending, error } = useLazyFetch('/api/stats/dashboard')
 
-const columns = [
-  { key: 'invoice_number', label: 'Номер' },
-  { key: 'payer_name', label: 'Клиент' },
-  { key: 'amount', label: 'Сумма' },
-  { key: 'status', label: 'Статус' },
-  { key: 'created_at', label: 'Дата создания' }
-]
+const NuxtLink = resolveComponent('NuxtLink')
+const UBadge = resolveComponent('UBadge')
+
+type Invoice = {
+  id: string
+  invoice_number: string
+  payer_name: string
+  amount: number
+  status: string
+  created_at: string
+}
 
 const getStatusColor = (status: string) => {
-  const colors: Record<string, string> = {
-    draft: 'gray',
-    sent: 'blue',
-    viewed: 'amber',
-    paid: 'green',
-    cancelled: 'red',
-    overdue: 'red'
+  const colors: Record<string, 'neutral' | 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'error'> = {
+    draft: 'neutral',
+    sent: 'info',
+    viewed: 'warning',
+    paid: 'success',
+    cancelled: 'error',
+    overdue: 'error'
   }
-  return colors[status] || 'gray'
+  return colors[status] || 'neutral'
 }
 
 const getStatusLabel = (status: string) => {
@@ -148,4 +131,37 @@ const getStatusLabel = (status: string) => {
   }
   return labels[status] || status
 }
+
+const columns: TableColumn<Invoice>[] = [
+  {
+    accessorKey: 'invoice_number',
+    header: 'Номер',
+    cell: ({ row }) => h(NuxtLink, {
+      to: `/invoices/${row.original.id}`,
+      class: 'text-primary-600 hover:text-primary-500 font-medium'
+    }, () => row.getValue('invoice_number'))
+  },
+  {
+    accessorKey: 'payer_name',
+    header: 'Клиент'
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Сумма',
+    cell: ({ row }) => formatMoney(row.getValue('amount'))
+  },
+  {
+    accessorKey: 'status',
+    header: 'Статус',
+    cell: ({ row }) => h(UBadge, {
+      color: getStatusColor(row.getValue('status')),
+      variant: 'subtle'
+    }, () => getStatusLabel(row.getValue('status')))
+  },
+  {
+    accessorKey: 'created_at',
+    header: 'Дата создания',
+    cell: ({ row }) => formatDate(row.getValue('created_at'))
+  }
+]
 </script>

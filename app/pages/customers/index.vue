@@ -44,7 +44,7 @@ async function deleteCustomer(id: string) {
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
         <h1 class="text-2xl font-bold" data-testid="page-title">Клиенты</h1>
-        <p class="text-muted-foreground">Управление базой клиентов</p>
+        <p class="text-gray-600 dark:text-gray-400">Управление базой клиентов</p>
       </div>
       <UButton
         icon="i-lucide-plus"
@@ -108,12 +108,12 @@ async function deleteCustomer(id: string) {
 
         <template #email-data="{ row }">
           <span v-if="row.email">{{ row.email }}</span>
-          <span v-else class="text-muted-foreground">—</span>
+          <span v-else class="text-gray-600 dark:text-gray-400">—</span>
         </template>
 
         <template #phone-data="{ row }">
           <span v-if="row.phone">{{ row.phone }}</span>
-          <span v-else class="text-muted-foreground">—</span>
+          <span v-else class="text-gray-600 dark:text-gray-400">—</span>
         </template>
 
         <template #actions-data="{ row }">
@@ -140,10 +140,10 @@ async function deleteCustomer(id: string) {
 
       <div v-if="data?.items?.length === 0 && status !== 'pending'" class="p-8 text-center" data-testid="empty-state">
         <div class="bg-neutral-50 dark:bg-neutral-900 rounded-full p-4 w-fit mx-auto mb-4">
-          <UIcon name="i-lucide-users" class="size-8 text-muted-foreground" />
+          <UIcon name="i-lucide-users" class="size-8 text-gray-600 dark:text-gray-400" />
         </div>
         <h3 class="text-lg font-semibold mb-2">Клиенты не найдены</h3>
-        <p class="text-muted-foreground mb-6 max-w-sm mx-auto">
+        <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-sm mx-auto">
           В вашей базе пока нет клиентов. Добавьте первого клиента, чтобы начать выставлять счета.
         </p>
         <UButton to="/customers/new" icon="i-lucide-plus" data-testid="empty-state-create-button">
@@ -155,7 +155,7 @@ async function deleteCustomer(id: string) {
         v-if="data?.totalPages && data.totalPages > 1"
         class="flex items-center justify-between px-4 py-3 border-t"
       >
-        <p class="text-sm text-muted-foreground">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
           Показано {{ (page - 1) * limit + 1 }}–{{ Math.min(page * limit, data.total) }} из {{ data.total }}
         </p>
         <UPagination

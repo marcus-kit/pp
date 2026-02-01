@@ -82,7 +82,7 @@ function formatDate(date: string | null) {
               {{ recurring.is_active ? 'Активна' : 'Неактивна' }}
             </UBadge>
           </h1>
-          <p class="text-muted-foreground">
+          <p class="text-gray-600 dark:text-gray-400">
             Создана {{ formatDate(recurring.created_at) }}
           </p>
         </div>
@@ -115,7 +115,7 @@ function formatDate(date: string | null) {
           </template>
 
           <UTable
-            :rows="recurring.items || []"
+            :data="recurring.items || []"
             :columns="[
               { key: 'name', label: 'Наименование' },
               { key: 'quantity', label: 'Кол-во' },
@@ -133,7 +133,7 @@ function formatDate(date: string | null) {
 
           <div class="flex justify-end p-4 border-t">
             <div class="text-right">
-              <p class="text-sm text-muted-foreground">Итого к оплате</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Итого к оплате</p>
               <p class="text-2xl font-bold">{{ formatCurrency(recurring.amount) }}</p>
             </div>
           </div>
@@ -157,7 +157,7 @@ function formatDate(date: string | null) {
           
           <div class="space-y-4">
             <div v-if="recurring.customer">
-              <p class="text-sm text-muted-foreground">Имя</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Имя</p>
               <p class="font-medium">{{ recurring.customer.full_name }}</p>
             </div>
             <div>
@@ -179,27 +179,27 @@ function formatDate(date: string | null) {
           
           <div class="space-y-4">
             <div>
-              <p class="text-sm text-muted-foreground">Интервал</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Интервал</p>
               <p>Ежемесячно</p>
             </div>
             <div>
-              <p class="text-sm text-muted-foreground">День выставления</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">День выставления</p>
               <p>{{ recurring.day_of_month }} число каждого месяца</p>
             </div>
             <div>
-              <p class="text-sm text-muted-foreground">Дата начала</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Дата начала</p>
               <p>{{ formatDate(recurring.starts_at) }}</p>
             </div>
             <div v-if="recurring.ends_at">
-              <p class="text-sm text-muted-foreground">Дата окончания</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Дата окончания</p>
               <p>{{ formatDate(recurring.ends_at) }}</p>
             </div>
             <div v-if="recurring.last_generated_at">
-              <p class="text-sm text-muted-foreground">Последний счёт</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Последний счёт</p>
               <p>{{ formatDate(recurring.last_generated_at) }}</p>
             </div>
             <div v-if="recurring.next_generation_at && recurring.is_active">
-              <p class="text-sm text-muted-foreground">Следующий счёт</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Следующий счёт</p>
               <p class="font-medium text-primary">{{ formatDate(recurring.next_generation_at) }}</p>
             </div>
           </div>

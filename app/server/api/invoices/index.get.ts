@@ -1,10 +1,10 @@
 import { searchInvoicesSchema } from '~/shared/schemas/invoice'
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 import type { Database } from '~/shared/types/database'
 
 export default defineEventHandler(async (event) => {
   const query = await getValidatedQuery(event, (body) => searchInvoicesSchema.parse(body))
-  const client = await serverSupabaseClient<Database>(event)
+  const client = await serverSupabaseServiceRole<Database>(event)
 
   let request = client
     .from('invoices')

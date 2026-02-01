@@ -1,17 +1,16 @@
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 import type { Database } from '~/shared/types/database'
+import { getOrCreateDefaultMerchant } from '~/server/utils/merchant'
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
-  const client = await serverSupabaseClient<Database>(event)
+  const client = await serverSupabaseServiceRole<Database>(event)
+  const merchant = await getOrCreateDefaultMerchant(client)
 
   let request = client
     .from('recurring_invoices')
     .select('*, customer:customers(full_name)', { count: 'exact' })
-
-  if (query.merchant_id) {
-    request = request.eq('merchant_id', query.merchant_id)
-  }
+    .eq('merchant_id', merchant.id)
 
   if (query.customer_id) {
     request = request.eq('customer_id', query.customer_id)

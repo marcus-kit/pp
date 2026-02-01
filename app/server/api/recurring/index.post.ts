@@ -1,27 +1,11 @@
 import { createRecurringInvoiceSchema } from '~/shared/schemas/recurring'
-import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 import type { Database } from '~/shared/types/database'
+import { getOrCreateDefaultMerchant } from '~/server/utils/merchant'
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
-  if (!user) {
-    throw createError({ statusCode: 401, message: 'Unauthorized' })
-  }
-
-  const client = await serverSupabaseClient<Database>(event)
-
-  const { data: merchant, error: merchantError } = await client
-    .from('merchants')
-    .select('id')
-    .eq('user_id', user.id)
-    .single()
-
-  if (merchantError || !merchant) {
-    throw createError({
-      statusCode: 400,
-      message: 'Merchant profile not found'
-    })
-  }
+  const client = await serverSupabaseServiceRole<Database>(event)
+  const merchant = await getOrCreateDefaultMerchant(client)
 
   const rawBody = await readBody(event)
   

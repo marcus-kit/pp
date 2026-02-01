@@ -9,28 +9,28 @@
         <p class="text-gray-500 dark:text-gray-400">Пожалуйста, подождите...</p>
       </div>
 
-      <Transition name="fade">
-        <UAlert
-          v-if="error"
-          color="red"
-          variant="subtle"
-          title="Ошибка входа"
-          :description="error"
-           icon="i-lucide-alert-circle"
-          data-testid="callback-error"
-        >
-          <template #footer>
-            <UButton
-              to="/auth/login"
-              variant="link"
-              color="red"
-              class="mt-2 p-0"
-            >
-              Вернуться на страницу входа
-            </UButton>
-          </template>
-        </UAlert>
-      </Transition>
+       <Transition name="fade">
+         <UAlert
+           v-if="error"
+           color="error"
+           variant="subtle"
+           title="Ошибка входа"
+           :description="error"
+            icon="i-lucide-alert-circle"
+           data-testid="callback-error"
+         >
+           <template #footer>
+             <UButton
+               to="/auth/login"
+               variant="link"
+               color="error"
+               class="mt-2 p-0"
+             >
+               Вернуться на страницу входа
+             </UButton>
+           </template>
+         </UAlert>
+       </Transition>
     </div>
   </div>
 </template>

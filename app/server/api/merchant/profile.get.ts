@@ -1,18 +1,18 @@
-import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
-import { Database } from '~/shared/types/database'
+import { serverSupabaseServiceRole } from '#supabase/server'
+import type { Database } from '~/shared/types/database'
+import { getOrCreateDefaultMerchant } from '~/server/utils/merchant'
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
-  if (!user) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
-  }
+  const client = await serverSupabaseServiceRole<Database>(event)
 
-  const client = await serverSupabaseClient<Database>(event)
+  // Получаем или создаём мерчанта по умолчанию
+  const merchant = await getOrCreateDefaultMerchant(client)
 
+  // Получаем полный профиль мерчанта
   const { data, error } = await client
     .from('merchants')
     .select('*')
-    .eq('user_id', user.id)
+    .eq('id', merchant.id)
     .single()
 
   if (error) {

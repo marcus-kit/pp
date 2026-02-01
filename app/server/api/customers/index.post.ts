@@ -1,35 +1,18 @@
-import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
-import { Database } from '~/shared/types/database'
+import { serverSupabaseServiceRole } from '#supabase/server'
+import type { Database } from '~/shared/types/database'
 import { createCustomerSchema } from '~/shared/schemas/customer'
+import { getOrCreateDefaultMerchant } from '~/server/utils/merchant'
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
-  if (!user) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
-  }
-
-  const supabase = await serverSupabaseClient<Database>(event)
+  const client = await serverSupabaseServiceRole<Database>(event)
+  const merchant = await getOrCreateDefaultMerchant(client)
   
   const body = await readBody(event)
   
   // Валидация через Zod
   const validatedData = createCustomerSchema.parse(body)
 
-  // Получаем merchant_id текущего пользователя
-  const { data: merchant, error: merchantError } = await supabase
-    .from('merchants')
-    .select('id')
-    .eq('user_id', user.id)
-    .single()
-
-  if (merchantError || !merchant) {
-    throw createError({
-      statusCode: 403,
-      statusMessage: 'Merchant profile not found'
-    })
-  }
-
-  const { data: customer, error } = await supabase
+  const { data: customer, error } = await client
     .from('customers')
     .insert({
       merchant_id: merchant.id,

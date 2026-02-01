@@ -64,13 +64,13 @@ function formatDate(date: string | null) {
 
 function getStatusColor(status: string) {
   switch (status) {
-    case 'draft': return 'gray'
-    case 'sent': return 'blue'
-    case 'viewed': return 'indigo'
-    case 'paid': return 'green'
-    case 'cancelled': return 'red'
-    case 'overdue': return 'orange'
-    default: return 'gray'
+    case 'draft': return 'neutral'
+    case 'sent': return 'info'
+    case 'viewed': return 'info'
+    case 'paid': return 'success'
+    case 'cancelled': return 'error'
+    case 'overdue': return 'warning'
+    default: return 'neutral'
   }
 }
 
@@ -104,7 +104,7 @@ function getStatusLabel(status: string) {
               {{ getStatusLabel(invoice.status) }}
             </UBadge>
           </h1>
-          <p class="text-muted-foreground">
+          <p class="text-gray-600 dark:text-gray-400">
             от {{ formatDate(invoice.created_at) }}
           </p>
         </div>
@@ -122,30 +122,30 @@ function getStatusLabel(status: string) {
         </UButton>
 
         <UButton
-          v-if="['sent', 'viewed', 'overdue'].includes(invoice.status)"
-          icon="i-lucide-check-circle"
-          color="green"
-          variant="soft"
-          :loading="isProcessing"
-          @click="updateStatus('paid')"
-        >
-          Отметить оплаченным
-        </UButton>
+           v-if="['sent', 'viewed', 'overdue'].includes(invoice.status)"
+           icon="i-lucide-check-circle"
+           color="success"
+           variant="soft"
+           :loading="isProcessing"
+           @click="updateStatus('paid')"
+         >
+           Отметить оплаченным
+         </UButton>
 
         <UButton
-          v-if="['draft', 'sent', 'viewed', 'overdue'].includes(invoice.status)"
-          icon="i-lucide-x-circle"
-          color="red"
-          variant="ghost"
-          :loading="isProcessing"
-          @click="updateStatus('cancelled')"
-        >
-          Отменить
-        </UButton>
+           v-if="['draft', 'sent', 'viewed', 'overdue'].includes(invoice.status)"
+           icon="i-lucide-x-circle"
+           color="error"
+           variant="ghost"
+           :loading="isProcessing"
+           @click="updateStatus('cancelled')"
+         >
+           Отменить
+         </UButton>
 
         <UDropdown :items="[[
-          { label: 'Удалить', icon: 'i-lucide-trash-2', click: deleteInvoice, color: 'red' }
-        ]]">
+           { label: 'Удалить', icon: 'i-lucide-trash-2', click: deleteInvoice, color: 'error' }
+         ]]">
           <UButton icon="i-lucide-more-vertical" color="neutral" variant="ghost" />
         </UDropdown>
       </div>
@@ -159,7 +159,7 @@ function getStatusLabel(status: string) {
           </template>
 
           <UTable
-            :rows="invoice.items || []"
+            :data="invoice.items || []"
             :columns="[
               { key: 'name', label: 'Наименование' },
               { key: 'quantity', label: 'Кол-во' },
@@ -177,7 +177,7 @@ function getStatusLabel(status: string) {
 
           <div class="flex justify-end p-4 border-t">
             <div class="text-right">
-              <p class="text-sm text-muted-foreground">Итого к оплате</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Итого к оплате</p>
               <p class="text-2xl font-bold">{{ formatCurrency(invoice.amount) }}</p>
             </div>
           </div>
@@ -201,11 +201,11 @@ function getStatusLabel(status: string) {
           
           <div class="space-y-4">
             <div>
-              <p class="text-sm text-muted-foreground">Плательщик</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Плательщик</p>
               <p class="font-medium">{{ invoice.payer_name }}</p>
             </div>
             <div v-if="invoice.payer_address">
-              <p class="text-sm text-muted-foreground">Адрес</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Адрес</p>
               <p>{{ invoice.payer_address }}</p>
             </div>
             <div v-if="invoice.customer">
@@ -227,17 +227,17 @@ function getStatusLabel(status: string) {
           
           <div class="space-y-4">
             <div>
-              <p class="text-sm text-muted-foreground">Дата выставления</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Дата выставления</p>
               <p>{{ formatDate(invoice.created_at) }}</p>
             </div>
             <div>
-              <p class="text-sm text-muted-foreground">Срок оплаты</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Срок оплаты</p>
               <p :class="{'text-red-500': invoice.status === 'overdue'}">
                 {{ formatDate(invoice.due_date) }}
               </p>
             </div>
             <div v-if="invoice.paid_at">
-              <p class="text-sm text-muted-foreground">Оплачен</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Оплачен</p>
               <p class="text-green-600 font-medium">{{ formatDate(invoice.paid_at) }}</p>
             </div>
           </div>
