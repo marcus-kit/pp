@@ -2,8 +2,7 @@
 import type { RecurringInvoice } from '~/shared/types/database'
 
 definePageMeta({ 
-  middleware: 'auth',
-  layout: 'dashboard'
+  middleware: 'auth'
 })
 
 const router = useRouter()

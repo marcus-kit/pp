@@ -4,8 +4,7 @@ import { updateCustomerSchema } from '~/shared/schemas/customer'
 import type { z } from 'zod'
 
 definePageMeta({ 
-  middleware: 'auth',
-  layout: 'dashboard'
+  middleware: 'auth'
 })
 
 type Schema = z.output<typeof updateCustomerSchema>

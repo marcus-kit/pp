@@ -4,8 +4,7 @@ import type { FormSubmitEvent } from '#ui/types'
 import { createInvoiceSchema } from '~/shared/schemas/invoice'
 
 definePageMeta({
-  middleware: 'auth',
-  layout: 'dashboard'
+  middleware: 'auth'
 })
 
 const router = useRouter()

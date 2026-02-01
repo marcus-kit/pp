@@ -2,8 +2,7 @@
 import type { Invoice } from '~/shared/types/database'
 
 definePageMeta({
-  middleware: 'auth',
-  layout: 'dashboard'
+  middleware: 'auth'
 })
 
 const route = useRoute()

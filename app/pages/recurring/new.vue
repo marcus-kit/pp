@@ -2,8 +2,7 @@
 import type { FormSubmitEvent } from '#ui/types'
 
 definePageMeta({
-  middleware: 'auth',
-  layout: 'dashboard'
+  middleware: 'auth'
 })
 
 const router = useRouter()
