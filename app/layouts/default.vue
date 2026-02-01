@@ -69,34 +69,28 @@
 <script setup lang="ts">
 const isMobileMenuOpen = ref(false)
 
-const items = computed(() => [
-  [
-    {
-      label: 'Обзор',
-      to: '/dashboard',
-      icon: 'i-lucide-home',
-      type: 'link' as const
-    },
-    {
-      label: 'Счета',
-      to: '/invoices',
-      icon: 'i-lucide-file-text',
-      type: 'link' as const
-    },
-    {
-      label: 'Клиенты',
-      to: '/customers',
-      icon: 'i-lucide-users',
-      type: 'link' as const
-    },
-    {
-      label: 'Подписки',
-      to: '/recurring',
-      icon: 'i-lucide-refresh-cw',
-      type: 'link' as const
-    }
-  ]
-])
+const items = [
+  {
+    label: 'Обзор',
+    to: '/dashboard',
+    icon: 'i-lucide-home'
+  },
+  {
+    label: 'Счета',
+    to: '/invoices',
+    icon: 'i-lucide-file-text'
+  },
+  {
+    label: 'Клиенты',
+    to: '/customers',
+    icon: 'i-lucide-users'
+  },
+  {
+    label: 'Подписки',
+    to: '/recurring',
+    icon: 'i-lucide-refresh-cw'
+  }
+]
 
 
 </script>
