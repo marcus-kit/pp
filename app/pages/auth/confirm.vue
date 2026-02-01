@@ -1,49 +1,53 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
-    <div class="w-full max-w-md">
-      <!-- Заголовок -->
-      <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-900/30 border border-emerald-700 mb-4">
-          <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
+  <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4 py-12 sm:px-6 lg:px-8" data-testid="confirm-page">
+    <div class="w-full max-w-md space-y-8">
+      <!-- Header -->
+      <div class="text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 mb-4">
+           <UIcon name="i-lucide-check" class="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
         </div>
-        <h1 class="text-3xl font-bold text-white mb-2">Проверьте email</h1>
-        <p class="text-slate-400">Ссылка для входа отправлена</p>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">
+          Проверьте email
+        </h1>
+        <p class="text-gray-500 dark:text-gray-400">
+          Ссылка для входа отправлена
+        </p>
       </div>
 
-      <!-- Карточка -->
-      <div class="bg-slate-800 rounded-lg shadow-2xl p-8 border border-slate-700 space-y-6">
-        <!-- Инструкция -->
+      <!-- Card -->
+      <UCard class="w-full" :ui="{ body: { base: 'space-y-6' } }">
         <div class="space-y-4">
-          <p class="text-slate-300">
+          <p class="text-gray-700 dark:text-gray-300">
             Мы отправили ссылку для входа на ваш email адрес. Нажмите на ссылку в письме, чтобы войти в аккаунт.
           </p>
-          <div class="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-            <p class="text-sm text-slate-400 mb-2">
-              <strong>Совет:</strong> Если письмо не пришло:
+          
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+            <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Если письмо не пришло:
             </p>
-            <ul class="text-sm text-slate-400 space-y-1 ml-4">
-              <li>• Проверьте папку спама</li>
-              <li>• Убедитесь, что email введен правильно</li>
-              <li>• Подождите несколько минут</li>
+            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1 ml-4 list-disc">
+              <li>Проверьте папку спама</li>
+              <li>Убедитесь, что email введен правильно</li>
+              <li>Подождите несколько минут</li>
             </ul>
           </div>
         </div>
 
-        <!-- Кнопка повтора -->
-        <div class="pt-4 border-t border-slate-700">
-          <NuxtLink
+        <template #footer>
+          <UButton
             to="/auth/login"
-            class="block w-full text-center px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
+            block
+            color="gray"
+            variant="solid"
+            data-testid="back-to-login-btn"
           >
             Вернуться на страницу входа
-          </NuxtLink>
-        </div>
-      </div>
+          </UButton>
+        </template>
+      </UCard>
 
-      <!-- Подвал -->
-      <div class="text-center mt-8 text-slate-500 text-sm">
+      <!-- Footer -->
+      <div class="text-center text-xs text-gray-500 dark:text-gray-400">
         <p>© 2025 PP Invoicing. Все права защищены.</p>
       </div>
     </div>

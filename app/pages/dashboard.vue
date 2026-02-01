@@ -1,22 +1,43 @@
 <template>
-  <UContainer class="py-8">
+  <UContainer class="py-8" data-testid="dashboard-page">
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Обзор</h1>
       <div class="flex gap-3">
-         <UButton to="/customers/new" icon="i-lucide-user-plus" color="white" variant="solid">
+         <UButton to="/customers/new" icon="i-lucide-user-plus" color="white" variant="solid" data-testid="add-customer-btn">
            Добавить клиента
          </UButton>
-         <UButton to="/invoices/new" icon="i-lucide-file-plus" color="primary" variant="solid">
+         <UButton to="/invoices/new" icon="i-lucide-file-plus" color="primary" variant="solid" data-testid="create-invoice-btn">
            Создать счёт
          </UButton>
       </div>
     </div>
 
-    <div v-if="pending" class="space-y-4">
+    <div v-if="pending" class="space-y-8" data-testid="dashboard-skeleton">
+      <!-- Stats Skeleton -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <USkeleton class="h-32" v-for="i in 3" :key="i" />
+        <UCard v-for="i in 3" :key="i">
+          <div class="flex items-center justify-between">
+            <div class="space-y-2">
+              <USkeleton class="h-4 w-24" />
+              <USkeleton class="h-8 w-32" />
+            </div>
+            <USkeleton class="h-12 w-12 rounded-full" />
+          </div>
+        </UCard>
       </div>
-      <USkeleton class="h-64" />
+      
+      <!-- Table Skeleton -->
+      <UCard>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center mb-4">
+            <USkeleton class="h-6 w-32" />
+            <USkeleton class="h-8 w-24" />
+          </div>
+          <div class="space-y-2">
+            <USkeleton class="h-12 w-full" v-for="i in 5" :key="i" />
+          </div>
+        </div>
+      </UCard>
     </div>
 
     <div v-else-if="error" class="text-red-500">
@@ -25,7 +46,7 @@
 
     <div v-else class="space-y-8">
       <!-- Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-testid="stats-grid">
          <StatCard
            title="Ожидает оплаты"
            :value="formatMoney(data?.stats.pending || 0)"
@@ -50,7 +71,7 @@
       </div>
 
       <!-- Recent Invoices -->
-      <UCard>
+      <UCard data-testid="recent-invoices-table">
         <template #header>
           <div class="flex justify-between items-center">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Недавние счета</h2>
@@ -94,7 +115,7 @@ definePageMeta({
 
 const { formatMoney, formatDate } = useFormatters()
 
-const { data, pending, error } = await useFetch('/api/stats/dashboard')
+const { data, pending, error } = useLazyFetch('/api/stats/dashboard')
 
 const columns = [
   { key: 'invoice_number', label: 'Номер' },

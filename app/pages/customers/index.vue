@@ -11,7 +11,7 @@ const page = ref(1)
 const limit = ref(20)
 const searchQuery = ref('')
 
-const { data, status, refresh } = await useFetch('/api/customers', {
+const { data, status, refresh } = useLazyFetch('/api/customers', {
   query: {
     page,
     limit,
@@ -40,27 +40,29 @@ async function deleteCustomer(id: string) {
 </script>
 
 <template>
-  <div class="space-y-6">
-    <div class="flex items-center justify-between">
+  <div class="space-y-6" data-testid="customers-page">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-bold">Клиенты</h1>
+        <h1 class="text-2xl font-bold" data-testid="page-title">Клиенты</h1>
         <p class="text-muted-foreground">Управление базой клиентов</p>
       </div>
       <UButton
         icon="i-lucide-plus"
         to="/customers/new"
+        data-testid="create-customer-button"
       >
         Добавить клиента
       </UButton>
     </div>
 
     <UCard :ui="{ body: 'p-0' }">
-      <div class="flex items-center gap-4 px-4 py-3.5 border-b">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 px-4 py-3.5 border-b">
         <UInput
           v-model="searchQuery"
           placeholder="Поиск по имени или email..."
           icon="i-lucide-search"
-          class="w-64"
+          class="w-full sm:w-64"
+          data-testid="search-input"
         />
 
         <div class="flex-1" />
@@ -71,13 +73,29 @@ async function deleteCustomer(id: string) {
           variant="ghost"
           :loading="status === 'pending'"
           @click="refresh()"
+          data-testid="refresh-button"
         />
       </div>
 
+      <div v-if="status === 'pending' && !data" class="p-4 space-y-4">
+        <div v-for="i in 5" :key="i" class="flex items-center justify-between">
+          <div class="space-y-2">
+            <USkeleton class="h-5 w-48" />
+            <USkeleton class="h-4 w-32" />
+          </div>
+          <div class="flex gap-2">
+            <USkeleton class="h-8 w-8" />
+            <USkeleton class="h-8 w-8" />
+          </div>
+        </div>
+      </div>
+
       <UTable
+        v-else
         :data="data?.items || []"
         :columns="columns"
         :loading="status === 'pending'"
+        data-testid="customers-table"
       >
         <template #full_name-data="{ row }">
           <NuxtLink
@@ -106,6 +124,7 @@ async function deleteCustomer(id: string) {
               variant="ghost"
               size="sm"
               @click="router.push(`/customers/${row.id}`)"
+              :data-testid="`edit-customer-${row.id}`"
             />
             <UButton
               icon="i-lucide-trash-2"
@@ -113,16 +132,21 @@ async function deleteCustomer(id: string) {
               variant="ghost"
               size="sm"
               @click="deleteCustomer(row.id)"
+              :data-testid="`delete-customer-${row.id}`"
             />
           </div>
         </template>
       </UTable>
 
-      <div v-if="data?.items?.length === 0 && status !== 'pending'" class="p-8 text-center">
-        <UIcon name="i-lucide-users" class="size-12 mx-auto text-muted-foreground mb-4" />
+      <div v-if="data?.items?.length === 0 && status !== 'pending'" class="p-8 text-center" data-testid="empty-state">
+        <div class="bg-neutral-50 dark:bg-neutral-900 rounded-full p-4 w-fit mx-auto mb-4">
+          <UIcon name="i-lucide-users" class="size-8 text-muted-foreground" />
+        </div>
         <h3 class="text-lg font-semibold mb-2">Клиенты не найдены</h3>
-        <p class="text-muted-foreground mb-4">Добавьте первого клиента</p>
-        <UButton to="/customers/new" icon="i-lucide-plus">
+        <p class="text-muted-foreground mb-6 max-w-sm mx-auto">
+          В вашей базе пока нет клиентов. Добавьте первого клиента, чтобы начать выставлять счета.
+        </p>
+        <UButton to="/customers/new" icon="i-lucide-plus" data-testid="empty-state-create-button">
           Добавить клиента
         </UButton>
       </div>

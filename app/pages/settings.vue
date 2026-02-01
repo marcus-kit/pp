@@ -31,7 +31,7 @@ const form = reactive({
 })
 
 // Fetch existing profile
-const { data: profile, status, refresh } = await useFetch<Merchant>('/api/merchant/profile')
+const { data: profile, status, refresh } = useLazyFetch<Merchant>('/api/merchant/profile')
 
 // Initialize form
 watch(profile, (newProfile) => {
@@ -117,7 +117,7 @@ async function saveProfile(event: FormSubmitEvent<z.infer<typeof updateMerchantS
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto py-8 px-4">
+  <div class="max-w-4xl mx-auto py-8 px-4" data-testid="settings-page">
     <div class="mb-8">
       <h1 class="text-2xl font-bold">Настройки профиля</h1>
       <p class="text-gray-500">Управляйте информацией о вашей компании и реквизитами</p>
@@ -127,7 +127,7 @@ async function saveProfile(event: FormSubmitEvent<z.infer<typeof updateMerchantS
       <UIcon name="i-lucide-loader-2" class="animate-spin size-8 text-primary" />
     </div>
 
-    <UForm v-else :schema="updateMerchantSchema" :state="form" class="space-y-6" @submit="saveProfile">
+    <UForm v-else :schema="updateMerchantSchema" :state="form" class="space-y-6" @submit="saveProfile" data-testid="settings-form">
       <!-- Основная информация -->
       <UCard>
         <template #header>
@@ -148,35 +148,36 @@ async function saveProfile(event: FormSubmitEvent<z.infer<typeof updateMerchantS
               ]"
               option-attribute="label"
               value-attribute="value"
+              data-testid="merchant-type-select"
             />
           </UFormField>
 
           <UFormField label="Название компании / ФИО" name="full_name" required class="md:col-span-2">
-            <UInput v-model="form.full_name" placeholder="ООО «Ромашка»" />
+            <UInput v-model="form.full_name" placeholder="ООО «Ромашка»" data-testid="full-name-input" />
           </UFormField>
 
           <UFormField label="Email" name="email" required>
-            <UInput v-model="form.email" type="email" />
+            <UInput v-model="form.email" type="email" data-testid="email-input" />
           </UFormField>
 
           <UFormField label="Телефон" name="phone">
-            <UInput v-model="form.phone" placeholder="+7 (999) 000-00-00" />
+            <UInput v-model="form.phone" placeholder="+7 (999) 000-00-00" data-testid="phone-input" />
           </UFormField>
 
           <UFormField label="ИНН" name="inn">
-            <UInput v-model="form.inn" placeholder="1234567890" />
+            <UInput v-model="form.inn" placeholder="1234567890" data-testid="inn-input" />
           </UFormField>
 
           <UFormField label="КПП" name="kpp">
-            <UInput v-model="form.kpp" placeholder="123456789" />
+            <UInput v-model="form.kpp" placeholder="123456789" data-testid="kpp-input" />
           </UFormField>
 
           <UFormField label="ОГРН" name="ogrn">
-            <UInput v-model="form.ogrn" placeholder="1234567890123" />
+            <UInput v-model="form.ogrn" placeholder="1234567890123" data-testid="ogrn-input" />
           </UFormField>
 
           <UFormField label="Юридический адрес" name="legal_address" class="md:col-span-2">
-            <UTextarea v-model="form.legal_address" placeholder="г. Москва, ул. Пушкина, д. 1" />
+            <UTextarea v-model="form.legal_address" placeholder="г. Москва, ул. Пушкина, д. 1" data-testid="legal-address-input" />
           </UFormField>
         </div>
       </UCard>
@@ -192,19 +193,19 @@ async function saveProfile(event: FormSubmitEvent<z.infer<typeof updateMerchantS
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <UFormField label="Название банка" name="bank_name" class="md:col-span-2">
-            <UInput v-model="form.bank_name" placeholder="ПАО Сбербанк" />
+            <UInput v-model="form.bank_name" placeholder="ПАО Сбербанк" data-testid="bank-name-input" />
           </UFormField>
 
           <UFormField label="БИК" name="bank_bic">
-            <UInput v-model="form.bank_bic" placeholder="044525225" maxlength="9" />
+            <UInput v-model="form.bank_bic" placeholder="044525225" maxlength="9" data-testid="bank-bic-input" />
           </UFormField>
 
           <UFormField label="Расчетный счет" name="bank_account">
-            <UInput v-model="form.bank_account" placeholder="40702810..." maxlength="20" />
+            <UInput v-model="form.bank_account" placeholder="40702810..." maxlength="20" data-testid="bank-account-input" />
           </UFormField>
 
           <UFormField label="Корр. счет" name="bank_corr_account">
-            <UInput v-model="form.bank_corr_account" placeholder="30101810..." maxlength="20" />
+            <UInput v-model="form.bank_corr_account" placeholder="30101810..." maxlength="20" data-testid="bank-corr-account-input" />
           </UFormField>
         </div>
       </UCard>
@@ -225,6 +226,7 @@ async function saveProfile(event: FormSubmitEvent<z.infer<typeof updateMerchantS
               type="button"
               class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
               @click="removeLogo"
+              data-testid="remove-logo-button"
             >
               <UIcon name="i-lucide-x" class="size-4" />
             </button>
@@ -240,6 +242,7 @@ async function saveProfile(event: FormSubmitEvent<z.infer<typeof updateMerchantS
               accept="image/*"
               class="hidden"
               @change="onFileSelect"
+              data-testid="logo-file-input"
             />
             <UButton
               color="white"
@@ -247,6 +250,7 @@ async function saveProfile(event: FormSubmitEvent<z.infer<typeof updateMerchantS
               icon="i-lucide-upload"
               :loading="isUploading"
               @click="fileInput?.click()"
+              data-testid="logo-upload-button"
             >
               Загрузить логотип
             </UButton>
@@ -258,7 +262,7 @@ async function saveProfile(event: FormSubmitEvent<z.infer<typeof updateMerchantS
       </UCard>
 
       <div class="flex justify-end">
-        <UButton type="submit" color="primary" size="lg" :loading="isSaving">
+        <UButton type="submit" color="primary" size="lg" :loading="isSaving" data-testid="save-settings-button">
           Сохранить изменения
         </UButton>
       </div>

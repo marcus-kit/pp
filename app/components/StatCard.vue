@@ -1,5 +1,5 @@
 <template>
-  <UCard>
+  <UCard data-testid="stat-card">
     <div class="flex items-center justify-between">
       <div>
         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ title }}</p>

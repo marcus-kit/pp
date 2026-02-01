@@ -1,66 +1,65 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
-    <div class="w-full max-w-md">
-      <!-- Заголовок -->
-      <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-white mb-2">PP Invoicing</h1>
-        <p class="text-slate-400">Вход в личный кабинет</p>
+  <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4 py-12 sm:px-6 lg:px-8" data-testid="login-page">
+    <div class="w-full max-w-md space-y-8">
+      <!-- Header -->
+      <div class="text-center">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+          PP Invoicing
+        </h1>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          Вход в личный кабинет
+        </p>
       </div>
 
-      <!-- Карточка формы -->
-      <div class="bg-slate-800 rounded-lg shadow-2xl p-8 border border-slate-700">
-        <!-- Статус сообщение -->
+      <!-- Form Card -->
+      <UCard class="w-full" :ui="{ body: { base: 'space-y-6' } }">
+        <!-- Status Message -->
         <Transition name="fade">
-          <div v-if="message" :class="['mb-6 p-4 rounded-lg text-sm', messageType === 'success' ? 'bg-emerald-900/30 text-emerald-300 border border-emerald-700' : 'bg-red-900/30 text-red-300 border border-red-700']">
-            {{ message }}
-          </div>
+          <UAlert
+            v-if="message"
+            :color="messageType === 'success' ? 'emerald' : 'red'"
+            variant="subtle"
+            :title="message"
+            :icon="messageType === 'success' ? 'i-lucide-check-circle' : 'i-lucide-alert-circle'"
+            data-testid="login-message"
+          />
         </Transition>
 
-        <!-- Форма -->
         <form @submit.prevent="handleLogin" class="space-y-6">
-          <!-- Email input -->
-          <div>
-            <label for="email" class="block text-sm font-medium text-slate-300 mb-2">
-              Email адрес
-            </label>
+          <UFormGroup label="Email адрес" name="email" required>
             <UInput
               id="email"
               v-model="email"
               type="email"
               placeholder="you@example.com"
-              required
+              icon="i-lucide-mail"
               :disabled="loading"
-              class="w-full"
+              data-testid="email-input"
+              autocomplete="email"
             />
-          </div>
+          </UFormGroup>
 
-          <!-- Submit button -->
           <UButton
             type="submit"
+            block
+            size="lg"
             :loading="loading"
             :disabled="loading || !email"
-            class="w-full"
-            size="lg"
+            data-testid="submit-btn"
           >
-            <template v-if="!loading">
-              Отправить ссылку входа
-            </template>
-            <template v-else>
-              Отправка...
-            </template>
+            {{ loading ? 'Отправка...' : 'Отправить ссылку входа' }}
           </UButton>
         </form>
 
-        <!-- Информация -->
-        <div class="mt-6 p-4 bg-slate-700/50 rounded-lg border border-slate-600">
-          <p class="text-xs text-slate-400">
+        <template #footer>
+          <p class="text-xs text-center text-gray-500 dark:text-gray-400">
             На указанный email будет отправлена ссылка для входа. Проверьте папку спама, если письмо не пришло.
           </p>
-        </div>
-      </div>
+        </template>
+      </UCard>
 
-      <!-- Подвал -->
-      <div class="text-center mt-8 text-slate-500 text-sm">
+      <!-- Footer -->
+      <div class="text-center text-xs text-gray-500 dark:text-gray-400">
         <p>© 2025 PP Invoicing. Все права защищены.</p>
       </div>
     </div>

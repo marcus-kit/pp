@@ -22,7 +22,7 @@ const statusOptions = [
   { label: 'Просрочен', value: 'overdue' }
 ]
 
-const { data, status, refresh } = await useFetch('/api/invoices', {
+const { data, status, refresh } = useLazyFetch('/api/invoices', {
   query: {
     page,
     limit,
@@ -71,7 +71,7 @@ function getStatusLabel(status: string) {
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div class="space-y-6" data-testid="invoices-page">
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-bold">Счета</h1>
@@ -80,25 +80,28 @@ function getStatusLabel(status: string) {
       <UButton
         icon="i-lucide-plus"
         to="/invoices/new"
+        data-testid="create-invoice-button"
       >
         Создать счёт
       </UButton>
     </div>
 
     <UCard :ui="{ body: 'p-0' }">
-      <div class="flex items-center gap-4 px-4 py-3.5 border-b">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4 px-4 py-3.5 border-b">
         <UInput
           v-model="searchQuery"
           placeholder="Поиск по номеру или клиенту..."
           icon="i-lucide-search"
-          class="w-64"
+          class="w-full sm:w-64"
+          data-testid="invoices-search-input"
         />
 
         <USelect
           v-model="statusFilter"
           :options="statusOptions"
           placeholder="Статус"
-          class="w-40"
+          class="w-full sm:w-40"
+          data-testid="invoices-status-filter"
         />
 
         <div class="flex-1" />
@@ -109,6 +112,8 @@ function getStatusLabel(status: string) {
           variant="ghost"
           :loading="status === 'pending'"
           @click="refresh()"
+          data-testid="refresh-button"
+          class="self-end sm:self-auto"
         />
       </div>
 
@@ -117,7 +122,34 @@ function getStatusLabel(status: string) {
         :columns="columns"
         :loading="status === 'pending'"
         @select="(row) => router.push(`/invoices/${row.id}`)"
+        data-testid="invoices-table"
       >
+        <template #empty-state>
+          <div class="flex flex-col items-center justify-center py-12 gap-3" data-testid="invoices-empty-state">
+            <UIcon name="i-lucide-file-text" class="size-12 text-muted-foreground" />
+            <h3 class="text-lg font-semibold">Счета не найдены</h3>
+            <p class="text-muted-foreground text-center max-w-sm">
+              {{ searchQuery || statusFilter ? 'Попробуйте изменить параметры поиска' : 'Создайте первый счёт на оплату' }}
+            </p>
+            <UButton
+              v-if="!searchQuery && !statusFilter"
+              to="/invoices/new"
+              icon="i-lucide-plus"
+              data-testid="create-invoice-empty-button"
+            >
+              Создать счёт
+            </UButton>
+            <UButton
+              v-else
+              color="neutral"
+              variant="ghost"
+              @click="searchQuery = ''; statusFilter = undefined"
+            >
+              Сбросить фильтры
+            </UButton>
+          </div>
+        </template>
+
         <template #invoice_number-data="{ row }">
           <span class="font-medium font-mono">{{ row.invoice_number }}</span>
         </template>
@@ -154,15 +186,6 @@ function getStatusLabel(status: string) {
         </template>
       </UTable>
 
-      <div v-if="data?.items?.length === 0 && status !== 'pending'" class="p-8 text-center">
-        <UIcon name="i-lucide-file-text" class="size-12 mx-auto text-muted-foreground mb-4" />
-        <h3 class="text-lg font-semibold mb-2">Счета не найдены</h3>
-        <p class="text-muted-foreground mb-4">Создайте первый счёт на оплату</p>
-        <UButton to="/invoices/new" icon="i-lucide-plus">
-          Создать счёт
-        </UButton>
-      </div>
-
       <div
         v-if="data?.totalPages && data.totalPages > 1"
         class="flex items-center justify-between px-4 py-3 border-t"
@@ -174,6 +197,7 @@ function getStatusLabel(status: string) {
           v-model="page"
           :total="data.total"
           :page-size="limit"
+          data-testid="invoices-pagination"
         />
       </div>
     </UCard>
