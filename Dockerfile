@@ -22,8 +22,10 @@ FROM base AS builder
 # Build args для Nuxt (@nuxtjs/supabase требует их во время билда)
 ARG SUPABASE_URL
 ARG SUPABASE_KEY
+ARG SUPABASE_SERVICE_KEY
 ENV SUPABASE_URL=${SUPABASE_URL}
 ENV SUPABASE_KEY=${SUPABASE_KEY}
+ENV SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
