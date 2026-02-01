@@ -2,7 +2,7 @@
 
 PayPal-like инвойсинговая система для российского рынка.
 
-**Generated:** 2026-02-01 | **Commit:** 95793b7 | **Branch:** main
+**Generated:** 2026-02-01 | **Commit:** 156d77b | **Branch:** main
 
 ## Stack
 
@@ -82,11 +82,16 @@ const { data: invoiceNumber } = await client.rpc('generate_invoice_number', {
 
 ### Supabase Clients
 ```typescript
-// Авторизованные запросы (с RLS)
-const client = await serverSupabaseClient<Database>(event)
+// ТЕКУЩИЙ РЕЖИМ (auth отключена): все API используют serviceRole
+import { serverSupabaseServiceRole } from '#supabase/server'
+import { getOrCreateDefaultMerchant } from '~/server/utils/merchant'
 
-// Публичные endpoints / scheduled tasks (обход RLS)
 const client = await serverSupabaseServiceRole<Database>(event)
+const merchant = await getOrCreateDefaultMerchant(client)
+
+// БУДУЩИЙ РЕЖИМ (когда auth включена):
+// const client = await serverSupabaseClient<Database>(event)
+// const user = await serverSupabaseUser(event)
 ```
 
 ## API Conventions
@@ -139,7 +144,7 @@ const toast = useToast()
 const router = useRouter()
 
 toast.add({ title: 'Успешно сохранено' })
-toast.add({ title: 'Ошибка', description: error.message, color: 'red' })
+toast.add({ title: 'Ошибка', description: error.message, color: 'error' })
 router.push('/invoices')
 ```
 
@@ -152,11 +157,11 @@ router.push('/invoices')
 </UForm>
 ```
 
-### Status Colors
+### Status Colors (Nuxt UI 4 semantic)
 ```typescript
 const statusColors: Record<string, string> = {
-  draft: 'gray', sent: 'blue', viewed: 'amber',
-  paid: 'green', cancelled: 'red', overdue: 'red'
+  draft: 'neutral', sent: 'info', viewed: 'warning',
+  paid: 'success', cancelled: 'error', overdue: 'error'
 }
 ```
 
@@ -191,8 +196,24 @@ scheduledTasks: {
 ```env
 SUPABASE_URL=
 SUPABASE_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_SERVICE_KEY=      # Для serverSupabaseServiceRole (обязательно в Dockerfile ARG!)
 DATABASE_URL=
+```
+
+### Dokploy Deploy Requirements
+
+Dockerfile требует build args для @nuxtjs/supabase:
+```dockerfile
+ARG SUPABASE_URL
+ARG SUPABASE_KEY
+ARG SUPABASE_SERVICE_KEY   # Обязательно для serverSupabaseServiceRole!
+```
+
+В Dokploy → buildArgs:
+```
+SUPABASE_URL=https://supabase.doka.team
+SUPABASE_KEY=eyJ...
+SUPABASE_SERVICE_KEY=eyJ...
 ```
 
 ## File Naming
