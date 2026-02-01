@@ -38,6 +38,10 @@ export default defineNuxtConfig({
 
   // Runtime config
   runtimeConfig: {
+    // Supabase service key для serverSupabaseServiceRole
+    supabase: {
+      serviceKey: process.env.SUPABASE_SERVICE_KEY
+    },
     // Серверные переменные (не публичные)
     databaseUrl: process.env.DATABASE_URL,
     sessionSecret: process.env.SESSION_SECRET,
