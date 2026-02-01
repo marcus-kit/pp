@@ -8,7 +8,7 @@
               <!-- Mobile Menu Button -->
               <UButton
                 v-if="user"
-                icon="i-heroicons-bars-3"
+                icon="i-lucide-menu"
                 color="neutral"
                 variant="ghost"
                 class="sm:hidden mr-2"
@@ -25,9 +25,9 @@
           <div class="flex items-center">
             <div v-if="user" class="flex items-center gap-4">
               <NuxtLink to="/settings" class="text-gray-500 hover:text-gray-700" title="Настройки">
-                <UIcon name="i-heroicons-cog-6-tooth" class="w-6 h-6" />
+                <UIcon name="i-lucide-settings" class="w-6 h-6" />
               </NuxtLink>
-              <UButton color="neutral" variant="ghost" icon="i-heroicons-arrow-right-on-rectangle" @click="logout" title="Выйти" />
+              <UButton color="neutral" variant="ghost" icon="i-lucide-log-out" @click="logout" title="Выйти" />
             </div>
             <div v-else>
               <UButton to="/auth/login" color="primary" variant="solid">Войти</UButton>
@@ -42,7 +42,7 @@
       <template #header>
         <div class="flex items-center justify-between">
           <span class="text-xl font-bold text-primary-600">Меню</span>
-          <UButton color="neutral" variant="ghost" icon="i-heroicons-x-mark" @click="isMobileMenuOpen = false" />
+           <UButton color="neutral" variant="ghost" icon="i-lucide-x" @click="isMobileMenuOpen = false" />
         </div>
       </template>
       
@@ -57,10 +57,10 @@
       </template>
       
       <template #footer>
-        <div class="flex flex-col gap-2">
-           <UButton to="/settings" color="neutral" variant="ghost" icon="i-heroicons-cog-6-tooth" label="Настройки" class="justify-start" @click="isMobileMenuOpen = false" />
-           <UButton color="neutral" variant="ghost" icon="i-heroicons-arrow-right-on-rectangle" label="Выйти" class="justify-start" @click="logout" />
-        </div>
+         <div class="flex flex-col gap-2">
+            <UButton to="/settings" color="neutral" variant="ghost" icon="i-lucide-settings" label="Настройки" class="justify-start" @click="isMobileMenuOpen = false" />
+            <UButton color="neutral" variant="ghost" icon="i-lucide-log-out" label="Выйти" class="justify-start" @click="logout" />
+         </div>
       </template>
     </UDrawer>
 
@@ -81,22 +81,22 @@ const items = computed(() => [
   {
     label: 'Обзор',
     to: '/dashboard',
-    icon: 'i-heroicons-home'
+    icon: 'i-lucide-home'
   },
   {
     label: 'Счета',
     to: '/invoices',
-    icon: 'i-heroicons-document-text'
+    icon: 'i-lucide-file-text'
   },
   {
     label: 'Клиенты',
     to: '/customers',
-    icon: 'i-heroicons-users'
+    icon: 'i-lucide-users'
   },
   {
     label: 'Подписки',
     to: '/recurring',
-    icon: 'i-heroicons-arrow-path'
+    icon: 'i-lucide-refresh-cw'
   }
 ])
 

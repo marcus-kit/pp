@@ -71,12 +71,12 @@ const downloadPdf = () => {
 <template>
   <div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
     <div v-if="pending" class="flex justify-center items-center h-64">
-      <UIcon name="i-heroicons-arrow-path" class="animate-spin w-8 h-8 text-gray-400" />
+       <UIcon name="i-lucide-loader-2" class="animate-spin w-8 h-8 text-gray-400" />
     </div>
 
     <div v-else-if="error" class="max-w-3xl mx-auto text-center">
       <div class="bg-white p-8 rounded-lg shadow-sm">
-        <UIcon name="i-heroicons-exclamation-circle" class="w-12 h-12 text-red-500 mx-auto mb-4" />
+         <UIcon name="i-lucide-alert-circle" class="w-12 h-12 text-red-500 mx-auto mb-4" />
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Счет не найден</h1>
         <p class="text-gray-600">Возможно, ссылка устарела или содержит ошибку.</p>
       </div>
@@ -90,14 +90,14 @@ const downloadPdf = () => {
             {{ statusLabel(invoice.status) }}
           </UBadge>
         </div>
-        <UButton
-          icon="i-heroicons-document-arrow-down"
-          color="gray"
-          variant="ghost"
-          @click="downloadPdf"
-        >
-          Скачать PDF
-        </UButton>
+         <UButton
+           icon="i-lucide-download"
+           color="gray"
+           variant="ghost"
+           @click="downloadPdf"
+         >
+           Скачать PDF
+         </UButton>
       </div>
 
       <UCard class="mb-6">

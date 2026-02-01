@@ -3,12 +3,12 @@
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Обзор</h1>
       <div class="flex gap-3">
-        <UButton to="/customers/new" icon="i-heroicons-user-plus" color="white" variant="solid">
-          Добавить клиента
-        </UButton>
-        <UButton to="/invoices/new" icon="i-heroicons-document-plus" color="primary" variant="solid">
-          Создать счёт
-        </UButton>
+         <UButton to="/customers/new" icon="i-lucide-user-plus" color="white" variant="solid">
+           Добавить клиента
+         </UButton>
+         <UButton to="/invoices/new" icon="i-lucide-file-plus" color="primary" variant="solid">
+           Создать счёт
+         </UButton>
       </div>
     </div>
 
@@ -26,27 +26,27 @@
     <div v-else class="space-y-8">
       <!-- Stats -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <StatCard
-          title="Ожидает оплаты"
-          :value="formatMoney(data?.stats.pending || 0)"
-          icon="i-heroicons-clock"
-          icon-color="text-amber-600"
-          icon-bg-color="bg-amber-100 dark:bg-amber-900/30"
-        />
-        <StatCard
-          title="Оплачено (этот месяц)"
-          :value="formatMoney(data?.stats.paid || 0)"
-          icon="i-heroicons-check-circle"
-          icon-color="text-green-600"
-          icon-bg-color="bg-green-100 dark:bg-green-900/30"
-        />
-        <StatCard
-          title="Просрочено"
-          :value="formatMoney(data?.stats.overdue || 0)"
-          icon="i-heroicons-exclamation-circle"
-          icon-color="text-red-600"
-          icon-bg-color="bg-red-100 dark:bg-red-900/30"
-        />
+         <StatCard
+           title="Ожидает оплаты"
+           :value="formatMoney(data?.stats.pending || 0)"
+           icon="i-lucide-clock"
+           icon-color="text-amber-600"
+           icon-bg-color="bg-amber-100 dark:bg-amber-900/30"
+         />
+         <StatCard
+           title="Оплачено (этот месяц)"
+           :value="formatMoney(data?.stats.paid || 0)"
+           icon="i-lucide-check-circle"
+           icon-color="text-green-600"
+           icon-bg-color="bg-green-100 dark:bg-green-900/30"
+         />
+         <StatCard
+           title="Просрочено"
+           :value="formatMoney(data?.stats.overdue || 0)"
+           icon="i-lucide-alert-circle"
+           icon-color="text-red-600"
+           icon-bg-color="bg-red-100 dark:bg-red-900/30"
+         />
       </div>
 
       <!-- Recent Invoices -->
@@ -54,10 +54,10 @@
         <template #header>
           <div class="flex justify-between items-center">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Недавние счета</h2>
-            <UButton to="/invoices" variant="ghost" color="gray" size="sm">
-              Все счета
-              <UIcon name="i-heroicons-arrow-right" />
-            </UButton>
+             <UButton to="/invoices" variant="ghost" color="gray" size="sm">
+               Все счета
+               <UIcon name="i-lucide-arrow-right" />
+             </UButton>
           </div>
         </template>
 
