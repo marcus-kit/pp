@@ -66,11 +66,11 @@
 - `tests/e2e/ui-polish.spec.ts` - Playwright тесты
 
 ### Definition of Done
-- [ ] `grep -r "i-heroicons" app/ --include="*.vue" | wc -l` = 0
-- [ ] Все страницы отображаются корректно на 375px, 768px, 1280px
-- [ ] Dark mode работает автоматически по системным настройкам
-- [ ] Мобильное меню открывается и закрывается
-- [ ] Playwright тесты проходят
+- [x] `grep -r "i-heroicons" app/ --include="*.vue" | wc -l` = 0
+- [x] Все страницы отображаются корректно на 375px, 768px, 1280px
+- [x] Dark mode работает автоматически по системным настройкам
+- [x] Мобильное меню открывается и закрывается
+- [x] Playwright тесты проходят
 
 ### Must Have
 - NavigationMenu компонент для десктоп навигации
@@ -158,7 +158,7 @@ Wave 4 (After all pages done):
 
 ## TODOs
 
-- [ ] 1. Setup Playwright Test Infrastructure + Auth Bypass
+- [x] 1. Setup Playwright Test Infrastructure + Auth Bypass
 
   **What to do**:
   - Установить Playwright: `bun add -D @playwright/test`
@@ -243,7 +243,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 2. Create app.config.ts with PayPal Theme
+- [x] 2. Create app.config.ts with PayPal Theme
 
   **What to do**:
   - Создать `app/app.config.ts`
@@ -297,7 +297,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 3. Update default.vue Layout with NavigationMenu + Drawer
+- [x] 3. Update default.vue Layout with NavigationMenu + Drawer
 
   **What to do**:
   - Заменить ручную навигацию на `UNavigationMenu` компонент
@@ -366,7 +366,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 3b. Remove `layout: 'dashboard'` from All Pages
+- [x] 3b. Remove `layout: 'dashboard'` from All Pages
 
   **What to do**:
   - Удалить `layout: 'dashboard'` из definePageMeta во всех затронутых файлах:
@@ -418,7 +418,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 4. Migrate All Icons from Heroicons to Lucide
+- [x] 4. Migrate All Icons from Heroicons to Lucide
 
   **What to do**:
   - Найти все использования `i-heroicons-*`
@@ -471,7 +471,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 5. Polish Dashboard Page
+- [x] 5. Polish Dashboard Page
 
   **What to do**:
   - Проверить и улучшить skeleton loaders (уже есть базовые)
@@ -519,7 +519,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 6. Polish Invoices List Page
+- [x] 6. Polish Invoices List Page
 
   **What to do**:
   - Убрать ссылку на несуществующий layout 'dashboard'
@@ -573,7 +573,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 7. Polish Customers List Page
+- [x] 7. Polish Customers List Page
 
   **What to do**:
   - Добавить skeleton loader для списка
@@ -613,7 +613,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 8. Polish Recurring Invoices Page
+- [x] 8. Polish Recurring Invoices Page
 
   **What to do**:
   - Добавить skeleton loader
@@ -652,7 +652,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 9. Polish Settings Page
+- [x] 9. Polish Settings Page
 
   **What to do**:
   - Улучшить форму профиля мерчанта
@@ -690,7 +690,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 10. Polish Public Invoice Page
+- [x] 10. Polish Public Invoice Page
 
   **What to do**:
   - Применить общий стиль с админкой
@@ -730,7 +730,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 11. Polish Auth Pages
+- [x] 11. Polish Auth Pages
 
   **What to do**:
   - Обновить login page с новым стилем
@@ -772,7 +772,7 @@ Wave 4 (After all pages done):
 
 ---
 
-- [ ] 12. Final Playwright Tests Suite
+- [x] 12. Final Playwright Tests Suite
 
   **What to do**:
   - Создать полный тест suite в `tests/e2e/ui-polish.spec.ts`
@@ -856,9 +856,9 @@ test -f app/app.config.ts && echo "EXISTS"
 ```
 
 ### Final Checklist
-- [ ] Все "Must Have" присутствуют
-- [ ] Все "Must NOT Have" отсутствуют
-- [ ] Все Playwright тесты проходят
-- [ ] Нет heroicons в коде
-- [ ] Мобильное меню работает
-- [ ] Dark mode работает автоматически
+- [x] Все "Must Have" присутствуют
+- [x] Все "Must NOT Have" отсутствуют
+- [x] Все Playwright тесты проходят
+- [x] Нет heroicons в коде
+- [x] Мобильное меню работает
+- [x] Dark mode работает автоматически

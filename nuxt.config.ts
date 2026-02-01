@@ -44,8 +44,7 @@ export default defineNuxtConfig({
       appName: 'PP Invoicing',
       appVersion: '1.0.0',
       supabaseUrl: process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
-      supabaseKey: process.env.SUPABASE_KEY || 'placeholder-key',
-      e2eTest: process.env.NUXT_PUBLIC_E2E_TEST || ''
+      supabaseKey: process.env.SUPABASE_KEY || 'placeholder-key'
     }
   },
 
